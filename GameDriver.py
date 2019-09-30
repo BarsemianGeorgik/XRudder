@@ -36,9 +36,13 @@ if __name__ == '__main__':
         if action == 'P':
             # implementation for putting a token
             print("P is a valid move")
+            indexMove = input("Enter the index of your move (Letter followed by number):").upper()
+            gameBoard.putToken(indexMove)
+
         elif action == 'M':
             # implementation for Moving a token
             print("M is a valid move")
+            gameBoard.moveToken()
 
         # Print the Board
         gameBoard.printBoard()
