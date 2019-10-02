@@ -18,9 +18,11 @@ if __name__ == '__main__':
         # Choosing the Player's turn
         if isFirstPlayerTurn:
             player = "Player 1"
+            playerToken = "X"
             isFirstPlayerTurn = False
         else:
             player = "Player 2"
+            playerToken = "O"
             isFirstPlayerTurn = True
 
         # Player action input
@@ -33,16 +35,23 @@ if __name__ == '__main__':
             break
 
         # Action Process
+
         if action == 'P':
             # implementation for putting a token
             print("P is a valid move")
-            indexMove = input("Enter the index of your move (Letter followed by number):").upper()
-            gameBoard.putToken(indexMove)
+            validPutAction = False
+            while not validPutAction:
+                indexMove = input("Enter the index of your put action (Letter followed by number):").upper()
+                validPutAction = gameBoard.putToken(indexMove, playerToken)
+
 
         elif action == 'M':
             # implementation for Moving a token
             print("M is a valid move")
-            gameBoard.moveToken()
+            validMoveAction = False
+            while not validMoveAction:
+                indexMove = input("Enter the index of your move (Letter followed by number):").upper()
+                validMoveAction = gameBoard.moveToken(indexMove, playerToken)
 
         # Print the Board
         gameBoard.printBoard()
