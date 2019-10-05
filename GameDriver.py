@@ -10,8 +10,10 @@ if __name__ == '__main__':
 
     print("The Game has Started!")
     gameBoard.printBoard()
+    player1Win = False
+    player2Win = False
 
-    while True:
+    while (not player1Win) & (not player2Win) & (roundCounter != 30):
         roundCounter = roundCounter + 1
         print("Round: " + str(roundCounter))
 
@@ -57,3 +59,12 @@ if __name__ == '__main__':
         gameBoard.printBoard()
 
         # Check if a player won
+        player1Win = gameBoard.didPlayerTokenWin("X", "O")
+        player2Win = gameBoard.didPlayerTokenWin("O", "X")
+
+    if player1Win:
+        print("Player 1 won the game")
+    elif player2Win:
+        print("Player 2 won the game")
+    else:
+        print("Game Over: End of round")
