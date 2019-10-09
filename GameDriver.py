@@ -29,8 +29,12 @@ if __name__ == '__main__':
 
         # Player action input
         while True:
-            action = input(
-                "It's " + player + "'s turn! What would you like to do? [P]ut a new token or [M]ove an existing one?").upper()
+            if roundCounter <= 2:
+                print("Place your first token!")
+                action = 'P'
+            else:
+                action = input(
+                    "It's " + player + "'s turn! What would you like to do? [P]ut a new token or [M]ove an existing one?").upper()
             if action not in "PM" or len(action) != 1:
                 print("The entry was not correct please try again")
                 continue

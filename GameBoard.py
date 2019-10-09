@@ -21,10 +21,10 @@ class GameBoard:
             for j in range(1, 11):
                 if playerToken == self.board[x][j]:
                     # check top left , top right, bottom left and bottom right
-                    if ((playerToken == self.board[x-1][j-1]) & (playerToken == self.board[x-1][j+1])
-                            & (playerToken == self.board[x+1][j-1]) & (playerToken == self.board[x+1][j+1])):
+                    if ((playerToken == self.board[x - 1][j - 1]) & (playerToken == self.board[x - 1][j + 1])
+                            & (playerToken == self.board[x + 1][j - 1]) & (playerToken == self.board[x + 1][j + 1])):
                         # Check if opponent has blocked the player X
-                        if(adversaryToken != self.board[x][j-1]) & (adversaryToken != self.board[x][j+1]):
+                        if (adversaryToken != self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]):
                             gameOver = True
         return gameOver
 
@@ -72,9 +72,10 @@ class GameBoard:
 
                 validPutAction = False
                 while not validPutAction:
-                    indexMove = input("Enter the index which you'd like to move to (Letter followed by number):").upper()
+                    indexMove = input(
+                        "Enter the index which you'd like to move to (Letter followed by number):").upper()
                     validPutAction = self.putToken(indexMove, playerToken)
-                print("previous slots: "+str(prevX) + " " + str(prevY))
+                print("previous slots: " + str(prevX) + " " + str(prevY))
                 self.board[prevX][prevY] = '□'
                 return True
 
@@ -84,16 +85,15 @@ class GameBoard:
         else:
             return False
 
-
-    def stringToIndex(self, input):
+    def stringToIndex(self, userInput):
         # check if within a to m, and 1 to 10
-        input.replace(" ", "")
-        if len(input) > 3 or input[0].upper() not in "ABCDEFGHIJKL" or int(input[1:]) > 10:
+        userInput.replace(" ", "")
+        if len(userInput) > 3 or userInput[0].upper() not in "ABCDEFGHIJKL" or int(userInput[1:]) > 10:
             print("That is an invalid input")
             return False
         else:
-            self.y_val = (ord(input[0].lower()) - 97)  # -97 to get the index.. a-97 = 0, etc.
-            self.x_val = 10 - int(input[1:])
+            self.y_val = (ord(userInput[0].lower()) - 97)  # -97 to get the index.. a-97 = 0, etc.
+            self.x_val = 10 - int(userInput[1:])
             print("valid index")
             print(self.x_val, self.y_val)
             return True
