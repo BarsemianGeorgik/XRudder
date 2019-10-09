@@ -24,7 +24,9 @@ class GameBoard:
                     if ((playerToken == self.board[x - 1][j - 1]) & (playerToken == self.board[x - 1][j + 1])
                             & (playerToken == self.board[x + 1][j - 1]) & (playerToken == self.board[x + 1][j + 1])):
                         # Check if opponent has blocked the player X
-                        if (adversaryToken != self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]):
+                        if (((adversaryToken != self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]))
+                                | ((adversaryToken == self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]))
+                                | ((adversaryToken != self.board[x][j - 1]) & (adversaryToken == self.board[x][j + 1]))):
                             gameOver = True
         return gameOver
 
