@@ -1,16 +1,16 @@
 class GameBoard:
 
     def __init__(self):
-        self.board = [['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ],
-                      ['□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', '□', ], ]
+        self.board = [['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                      ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ], ]
 
         self.x_val = 0
         self.y_val = 0
@@ -44,6 +44,7 @@ class GameBoard:
         for x in alphabetAxis:
             print(x, end=' ')
         print()
+        print()
 
     def putToken(self, args, playerToken):
         # Check if available
@@ -51,7 +52,7 @@ class GameBoard:
         # If available, assign index to player token
         valid = self.stringToIndex(args)
         if valid:
-            if self.board[self.x_val][self.y_val] == '□':
+            if self.board[self.x_val][self.y_val] == '.':
                 print("Placing the token")
                 self.board[self.x_val][self.y_val] = playerToken
                 return True
@@ -63,7 +64,6 @@ class GameBoard:
             return False
 
     def moveToken(self, args, playerToken):
-        print("Moving the token")
         # Check if valid input
         valid = self.stringToIndex(args)
         if valid:
@@ -78,7 +78,8 @@ class GameBoard:
                         "Enter the index which you'd like to move to (Letter followed by number):").upper()
                     validPutAction = self.putToken(indexMove, playerToken)
                 print("previous slots: " + str(prevX) + " " + str(prevY))
-                self.board[prevX][prevY] = '□'
+                self.board[prevX][prevY] = '.'
+                print("Moving the token")
                 return True
 
             elif self.board[self.x_val][self.y_val] != playerToken:

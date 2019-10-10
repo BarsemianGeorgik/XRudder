@@ -1,9 +1,16 @@
 from GameBoard import GameBoard
+from Player import Player
 
 if __name__ == '__main__':
 
     # Initializations
-    roundCounter = 0
+    turnCounter = 0
+    movesActionsRemaining = 30
+
+    #Player  initilization
+    p1 = Player("Player 1", "X")
+    p2 = Player("Player 2", "O")
+
     isFirstPlayerTurn = True
     player = " "
     gameBoard = GameBoard()
@@ -13,28 +20,35 @@ if __name__ == '__main__':
     player1Win = False
     player2Win = False
 
-    while (not player1Win) & (not player2Win) & (roundCounter != 30):
-        roundCounter = roundCounter + 1
-        print("Round: " + str(roundCounter))
+    while (not player1Win) & (not player2Win) & ((movesActionsRemaining != 0) & (p1.tokensRemaining != 0) & (p2.tokensRemaining != 0)) :
+        turnCounter = turnCounter + 1
 
         # Choosing the Player's turn
         if isFirstPlayerTurn:
-            player = "Player 1"
-            playerToken = "X"
+            player = p1
             isFirstPlayerTurn = False
         else:
-            player = "Player 2"
-            playerToken = "O"
+            player = p2
             isFirstPlayerTurn = True
 
         # Player action input
+        player.printPlayerStatus()
         while True:
-            if roundCounter <= 2:
-                print("Place your first token!")
+            if turnCounter <= 2:
+                print(player.name + " Place your first token!")
                 action = 'P'
+            elif player.tokensRemaining == 0:
+                print(player.name + " has run out of tokens. You can only move existing tokens.")
+                action = 'M'
+            elif movesActionsRemaining == 0 and player.tokensRemaining != 0:
+                print("Players have run out of move actions. You can only put new tokens on the board. ")
+                action = 'P'
+            elif movesActionsRemaining == 0 and player.tokensRemaining == 0:
+                print(player.name + " has no remaining tokens or moves. Turn ending.")
+
             else:
                 action = input(
-                    "It's " + player + "'s turn! What would you like to do? [P]ut a new token or [M]ove an existing one?").upper()
+                    "It's " + player.name + "'s turn! What would you like to do? [P]ut a new token or [M]ove an existing one?").upper()
             if action not in "PM" or len(action) != 1:
                 print("The entry was not correct please try again")
                 continue
@@ -43,12 +57,16 @@ if __name__ == '__main__':
         # Action Process
 
         if action == 'P':
-            # implementation for putting a token
+            # implementation for Putting a token
             print("P is a valid move")
             validPutAction = False
             while not validPutAction:
                 indexMove = input("Enter the index of your put action (Letter followed by number):").upper()
-                validPutAction = gameBoard.putToken(indexMove, playerToken)
+                validPutAction = gameBoard.putToken(indexMove, player.tokenCharacter)
+                if validPutAction:
+                    print("Removing one token from total")
+                    player.tokensRemaining = player.tokensRemaining - 1
+                    player.printPlayerStatus()
 
 
         elif action == 'M':
@@ -57,7 +75,8 @@ if __name__ == '__main__':
             validMoveAction = False
             while not validMoveAction:
                 indexMove = input("Enter the index of your move (Letter followed by number):").upper()
-                validMoveAction = gameBoard.moveToken(indexMove, playerToken)
+                validMoveAction = gameBoard.moveToken(indexMove, player.tokenCharacter)
+                movesActionsRemaining - 1
 
         # Print the Board
         gameBoard.printBoard()
