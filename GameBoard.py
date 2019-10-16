@@ -26,7 +26,8 @@ class GameBoard:
                         # Check if opponent has blocked the player X
                         if (((adversaryToken != self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]))
                                 | ((adversaryToken == self.board[x][j - 1]) & (adversaryToken != self.board[x][j + 1]))
-                                | ((adversaryToken != self.board[x][j - 1]) & (adversaryToken == self.board[x][j + 1]))):
+                                | ((adversaryToken != self.board[x][j - 1]) & (
+                                        adversaryToken == self.board[x][j + 1]))):
                             gameOver = True
         return gameOver
 
@@ -73,14 +74,31 @@ class GameBoard:
                 prevY = self.y_val
 
                 validPutAction = False
-                while not validPutAction:
+                validOneSpace = False
+                while not validPutAction and not validOneSpace:
                     indexMove = input(
                         "Enter the index which you'd like to move to (Letter followed by number):").upper()
-                    validPutAction = self.putToken(indexMove, playerToken)
-                print("previous slots: " + str(prevX) + " " + str(prevY))
-                self.board[prevX][prevY] = '.'
-                print("Moving the token")
-                return True
+
+                    self.stringToIndex(indexMove)
+                    # Check if the move is of only one space
+                    x_delta = self.x_val - prevX
+                    print(str(x_delta) + " x difference")
+                    y_delta = self.y_val - prevY
+                    print(str(y_delta) + " y difference")
+
+                    if -1 <= x_delta <= 1 and -1 <= y_delta <= 1:
+                        validOneSpace = True
+                        print("That's a valid one space move")
+
+                        if validOneSpace:
+                            validPutAction = self.putToken(indexMove, playerToken)
+
+                    elif not validOneSpace:
+                        print("That is not a valid one space move. Try again. ")
+                if validPutAction:
+                    self.board[prevX][prevY] = '.'
+                    print("Moving the token")
+                    return True
 
             elif self.board[self.x_val][self.y_val] != playerToken:
                 print("That field does not contain your token. Please try again")
