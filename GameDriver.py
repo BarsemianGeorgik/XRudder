@@ -64,7 +64,7 @@ if __name__ == '__main__':
                 indexMove = input("Enter the index of your put action (Letter followed by number):").upper()
                 validPutAction = gameBoard.putToken(indexMove, player.tokenCharacter)
                 if validPutAction:
-                    print("Removing one token from total")
+                    #print("Removing one token from total")
                     player.tokensRemaining = player.tokensRemaining - 1
                     player.printPlayerStatus()
 

@@ -82,9 +82,9 @@ class GameBoard:
                     self.stringToIndex(indexMove)
                     # Check if the move is of only one space
                     x_delta = self.x_val - prevX
-                    print(str(x_delta) + " x difference")
+                   # print(str(x_delta) + " x difference")
                     y_delta = self.y_val - prevY
-                    print(str(y_delta) + " y difference")
+                  #  print(str(y_delta) + " y difference")
 
                     if -1 <= x_delta <= 1 and -1 <= y_delta <= 1:
                         validOneSpace = True
@@ -116,5 +116,5 @@ class GameBoard:
             self.y_val = (ord(userInput[0].lower()) - 97)  # -97 to get the index.. a-97 = 0, etc.
             self.x_val = 10 - int(userInput[1:])
             print("valid index")
-            print(self.x_val, self.y_val)
+           # print(self.x_val, self.y_val)
             return True
