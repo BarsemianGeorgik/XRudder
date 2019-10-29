@@ -8,9 +8,6 @@ class MiniMaxTree:
     def __init__(self):
         self.root = None
 
-    def resetMiniMax(self):
-        self.root = None
-
     def setRoot(self, root):
         self.root = root
 

@@ -125,5 +125,3 @@ if __name__ == '__main__':
         for elem in row:
             print(elem, end=' ')
         print()
-
-    miniMaxTree.resetMiniMax()
