@@ -9,7 +9,7 @@ if __name__ == '__main__':
     turnCounter = 0
     movesActionsRemaining = 30
 
-    #Player  initilization
+    # Player  initialization
     p1 = Player("Player 1", "X")
     p2 = Player("Player 2", "O")
 
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     player1Win = False
     player2Win = False
-    aIEnabeled = False
+    aIEnabled = False
 
     while True:
         enablingAI = input(
@@ -30,11 +30,12 @@ if __name__ == '__main__':
         break;
 
     if enablingAI == 'Y':
-        aIEnabeled = True
+        aIEnabled = True
 
     print("The Game has Started!")
     gameBoard.printBoard()
-    while (not player1Win) & (not player2Win) & ((movesActionsRemaining != 0) & (p1.tokensRemaining != 0) & (p2.tokensRemaining != 0)) :
+    while (not player1Win) & (not player2Win) & (
+            (movesActionsRemaining != 0) & (p1.tokensRemaining != 0) & (p2.tokensRemaining != 0)):
         turnCounter = turnCounter + 1
 
         # Choosing the Player's turn
@@ -45,10 +46,10 @@ if __name__ == '__main__':
             player = p2
             isFirstPlayerTurn = True
 
-        #checking if its AI turn if its enabled
+        # checking if its AI turn if its enabled
         action = 'A'
         player.printPlayerStatus()
-        if (player != p2) or (not aIEnabeled):
+        if (player != p2) or (not aIEnabled):
             # Player action input
             while True:
                 if turnCounter <= 2:
@@ -79,11 +80,13 @@ if __name__ == '__main__':
             validPutAction = False
             while not validPutAction:
                 indexMove = input("Enter the index of your put action (Letter followed by number):").upper()
-                validPutAction = gameBoard.putToken(indexMove, player.tokenCharacter)
+                validPutAction = gameBoard.putToken(indexMove, player)
                 if validPutAction:
-                    #print("Removing one token from total")
+                    # print("Removing one token from total")
                     player.tokensRemaining = player.tokensRemaining - 1
                     player.printPlayerStatus()
+                    player.printPlayerTokens()
+                    gameBoard.possibleMoves(player)
 
 
         elif action == 'M':
@@ -92,13 +95,14 @@ if __name__ == '__main__':
             validMoveAction = False
             while not validMoveAction:
                 indexMove = input("Enter the index of your move (Letter followed by number):").upper()
-                validMoveAction = gameBoard.moveToken(indexMove, player.tokenCharacter)
+                validMoveAction = gameBoard.moveToken(indexMove, player)
                 movesActionsRemaining - 1
+                player.printPlayerTokens()
 
         elif action == 'A':
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
-            # creating all Ai moves
+            # creating all AI moves
             # creating all player moves followed by AI
             # give a heuristic to each of those player's move
             # Add player nodes to it's parent AI node

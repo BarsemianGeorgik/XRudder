@@ -47,7 +47,7 @@ class GameBoard:
         print()
         print()
 
-    def putToken(self, args, playerToken):
+    def putToken(self, args, player):
         # Check if available
         # If assigned, ask to enter again
         # If available, assign index to player token
@@ -55,7 +55,8 @@ class GameBoard:
         if valid:
             if self.board[self.x_val][self.y_val] == '.':
                 print("Placing the token")
-                self.board[self.x_val][self.y_val] = playerToken
+                self.board[self.x_val][self.y_val] = player.tokenCharacter
+                player.playerTokenLocations.append(args)
                 return True
 
             else:
@@ -64,12 +65,12 @@ class GameBoard:
         else:
             return False
 
-    def moveToken(self, args, playerToken):
+    def moveToken(self, args, player):
         # Check if valid input
         valid = self.stringToIndex(args)
         if valid:
             # check if token exists
-            if self.board[self.x_val][self.y_val] == playerToken:
+            if self.board[self.x_val][self.y_val] == player.tokenCharacter:
                 prevX = self.x_val
                 prevY = self.y_val
 
@@ -82,25 +83,27 @@ class GameBoard:
                     self.stringToIndex(indexMove)
                     # Check if the move is of only one space
                     x_delta = self.x_val - prevX
-                   # print(str(x_delta) + " x difference")
+                    # print(str(x_delta) + " x difference")
                     y_delta = self.y_val - prevY
-                  #  print(str(y_delta) + " y difference")
+                    #  print(str(y_delta) + " y difference")
 
                     if -1 <= x_delta <= 1 and -1 <= y_delta <= 1:
                         validOneSpace = True
                         print("That's a valid one space move")
 
                         if validOneSpace:
-                            validPutAction = self.putToken(indexMove, playerToken)
+                            validPutAction = self.putToken(indexMove, player)
 
                     elif not validOneSpace:
                         print("That is not a valid one space move. Try again. ")
                 if validPutAction:
                     self.board[prevX][prevY] = '.'
                     print("Moving the token")
+                    print(args.upper() + " is being removed from the player's list.")
+                    player.playerTokenLocations.remove(args.upper())
                     return True
 
-            elif self.board[self.x_val][self.y_val] != playerToken:
+            elif self.board[self.x_val][self.y_val] != player.tokenCharacter:
                 print("That field does not contain your token. Please try again")
                 return False
         else:
@@ -115,6 +118,25 @@ class GameBoard:
         else:
             self.y_val = (ord(userInput[0].lower()) - 97)  # -97 to get the index.. a-97 = 0, etc.
             self.x_val = 10 - int(userInput[1:])
-            print("valid index")
-           # print(self.x_val, self.y_val)
+            # print("valid index")
+            # print(self.x_val, self.y_val)
             return True
+
+    def possibleMoves(self, player):
+
+        for index in player.playerTokenLocations:
+            possibleIndex = []
+            for x in range(-1, 2):
+                for y in range(-1, 2):
+                    newX = chr(ord(index[0]) + x)
+                    newY = str(int(index[1:]) + y)  # done this way to handle index 10
+                    if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
+                        newXY = newX + newY
+
+                        # check if this place is occupied
+                        valid = self.stringToIndex(newXY)
+                        if valid:
+                            if self.board[self.x_val][self.y_val] == '.':
+                                possibleIndex.append(newXY)
+            print(possibleIndex)
+            return possibleIndex
