@@ -126,6 +126,8 @@ class GameBoard:
 
         for index in player.playerTokenLocations:
             possibleIndex = []
+            boards = []
+            boardIndex = 0
             for x in range(-1, 2):
                 for y in range(-1, 2):
                     newX = chr(ord(index[0]) + x)
@@ -138,5 +140,38 @@ class GameBoard:
                         if valid:
                             if self.board[self.x_val][self.y_val] == '.':
                                 possibleIndex.append(newXY)
+
+                                # Add a new board to the list
+                                newBoard = []
+                                newBoard = self.board.copy()
+                                newBoard[self.x_val][self.y_val] = '!'
+                                boards.append(newBoard)
+
+                                print("This is board #" + str(boardIndex))
+                                self.printTempBoard(boards[boardIndex])
+                                boardIndex = boardIndex + 1
+
+
+
+
             print(possibleIndex)
+
+
             return possibleIndex
+
+
+    def printTempBoard(self, boardList):
+        alphabetAxis = ['\t', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
+        print("============= GAME STATUS ============= ")
+        rowNumber = 10
+        for row in boardList:
+            print(str(rowNumber), end='\t ')
+            for elem in row:
+                print(elem, end=' ')
+            rowNumber = rowNumber - 1
+            print()
+
+        for x in alphabetAxis:
+            print(x, end=' ')
+        print()
+        print()
