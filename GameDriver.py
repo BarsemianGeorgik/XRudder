@@ -86,7 +86,7 @@ if __name__ == '__main__':
                     player.tokensRemaining = player.tokensRemaining - 1
                     player.printPlayerStatus()
                     player.printPlayerTokens()
-                    gameBoard.possibleMoves(player)
+                    gameBoard.allPutOptions(player)
 
 
         elif action == 'M':

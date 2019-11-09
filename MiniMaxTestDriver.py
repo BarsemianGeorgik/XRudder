@@ -40,8 +40,11 @@ if __name__ == '__main__':
                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ], ]
-    # Creating node of the Ai moves and putting inside a list to later pass as Root children
+    # # Creating node of the Ai moves and putting inside a list to later pass as Root children
     AImove1Node = MiniMaxNode(AIMove_1, 0)
+
+
+
     AImove2Node = MiniMaxNode(AIMove_2, 0)
 
     PlayerMoveAI1_1 = [['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
@@ -92,6 +95,7 @@ if __name__ == '__main__':
     PlayerMoveAI_1_1_Node = MiniMaxNode(PlayerMoveAI1_1, 10)
     PlayerMoveAI_1_2_Node = MiniMaxNode(PlayerMoveAI1_2, -5)
     PlayerMoveAI_2_1_Node = MiniMaxNode(PlayerMoveAI2_1, -3)
+
     PlayerMoveAI_2_2_Node = MiniMaxNode(PlayerMoveAI2_2, 3)
 
     # Adding player moves as AI_1 children Node
