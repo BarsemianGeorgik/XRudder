@@ -86,7 +86,7 @@ if __name__ == '__main__':
                     player.tokensRemaining = player.tokensRemaining - 1
                     player.printPlayerStatus()
                     player.printPlayerTokens()
-                    gameBoard.allPutOptions(player)
+                    gameBoard.possibleMoves(player)
 
 
         elif action == 'M':
@@ -102,6 +102,38 @@ if __name__ == '__main__':
         elif action == 'A':
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
+            AI_moves = []
+            AI_nodes = []
+            player_moves = []  # list of lists of player moves
+            player_nodes = []  #  list of lists of player nodes
+            temp = []
+            rootnode = MiniMaxNode(gameBoard.board, 0)  # create node of the current gameboard
+            miniMaxTree.setRoot(rootnode)  # set as the root node
+            AI_moves.extend(gameBoard.allPutOptions(p1))  # calculate all put options for AI
+            AI_moves.extend(gameBoard.possibleMoves(p1))  # calculate all move options for AI
+
+            for each in AI_moves:  # make each AI move a node
+                AI_nodes.append.MiniMaxNode(each, 0)  # setting heuristic to 0 for all of them,
+
+            for each in AI_moves:  # calculate player moves for each AI move
+                moves = each.allPutOptions(p2)
+                moves.extend(each.possibleMoves(p2))
+                player_moves.append(moves)
+                for move in moves:
+                    minimaxnode = MiniMaxNode(move, 0)
+                    minimaxnode.calculateHeuristic()
+                    temp.append.MiniMaxNode(move, 0)  # make playernode
+                    #  call heuristic function on the playermoves when created (can make it in the node class itself)
+                player_nodes.append(temp)
+                moves = []  # clear player move array
+                temp = []
+            i = 0
+            #  iterate through
+            for each in AI_nodes:
+                each.setChildren(player_nodes[i])
+                i = i + 1
+            rootnode.setChildren(AI_nodes)
+            gameBoard = miniMaxTree.getAIComputedMove()
             # creating all AI moves
             # creating all player moves followed by AI
             # give a heuristic to each of those player's move
