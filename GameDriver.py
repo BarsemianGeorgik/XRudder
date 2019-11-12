@@ -84,9 +84,8 @@ if __name__ == '__main__':
                 if validPutAction:
                     # print("Removing one token from total")
                     player.tokensRemaining = player.tokensRemaining - 1
-                    player.printPlayerStatus()
-                    player.printPlayerTokens()
-                    gameBoard.possibleMoves(player)
+
+
 
 
         elif action == 'M':
@@ -100,18 +99,60 @@ if __name__ == '__main__':
                 player.printPlayerTokens()
 
         elif action == 'A':
+
+            gameBoard.getAITokens(p2)
+
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
-            # creating all AI moves
-            # creating all player moves followed by AI
-            # give a heuristic to each of those player's move
-            # Add player nodes to it's parent AI node
-            # Add all AI nodes to the root Node
-            # set the root node to the minimaxTree
-            # gameBoard = miniMaxTree.getAIComputedMove()
+            AI_moves = []
+            AI_nodes = []
+            player_moves = []  # list of lists of player moves
+            player_nodes = []  # list of lists of player nodes
+            temp = []
+
+            rootnode = MiniMaxNode(gameBoard.board)  # create node of the current gameboard
+            miniMaxTree.setRoot(rootnode)  # set as the root node
+
+            AI_moves.extend(gameBoard.allPutOptions(p2))  # calculate all put options for AI
+            if movesActionsRemaining > 0 and len(p2.playerTokenLocations) != 0:
+                AI_moves.extend(gameBoard.possibleMoves(p2))  # calculate all move options for AI
+
+            for each in AI_moves:  # make each AI move a node
+                AI_nodes.append(MiniMaxNode(each.board))  # setting heuristic to 0 for all of them,
+
+            for each in AI_moves:  # calculate player moves for each AI move
+                moves = []
+                if p1.tokensRemaining > 0:
+                   moves = each.allPutOptions(p1)
+
+                if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0:
+                    moves.extend(each.possibleMoves(p1))
+                player_moves.append(moves)
+                for move in moves:
+                    minimaxnode = MiniMaxNode(move.board)
+                    minimaxnode.calculateHeuristic()  # calculating heuristic for leaf nodes
+                    temp.append(MiniMaxNode(move.board))  # make playernode
+                    #  call heuristic function on the playermoves when created (can make it in the node class itself)
+                player_nodes.append(temp)
+                moves = []  # clear player move array
+                temp = []
+            i = 0
+            #  iterate through
+            for each in AI_nodes:
+                each.setChildren(player_nodes[i])
+                i = i + 1
+            rootnode.setChildren(AI_nodes)
+            miniMaxTree.computeMiniMax()
+            gameBoard.board = miniMaxTree.getAIComputedMove()
+
+
 
         # Print the Board
         gameBoard.printBoard()
+        player.printPlayerStatus()
+        player.printPlayerTokens()
+
+        print("Moves remaining: " + str(movesActionsRemaining))
 
         # Check if a player won
         player1Win = gameBoard.didPlayerTokenWin("X", "O")

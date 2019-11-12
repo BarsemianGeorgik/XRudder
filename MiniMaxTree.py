@@ -18,17 +18,17 @@ class MiniMaxTree:
         return self.root.getGameBoard()
 
     def computeMiniMax(self):
-        maxChildList = self.root.getChildren()
-        maxValue = -sys.maxsize - 1
+        maxChildList = self.root.getChildren()  # AI's possible moves
+        maxValue = -sys.maxsize - 1  # -infinity
 
         for maxNode in maxChildList:
-            minChildList = maxNode.getChildren()
-            minValue = sys.maxsize
+            minChildList = maxNode.getChildren()  # Player's possible moves
+            minValue = sys.maxsize  # +infinity
             for minNode in minChildList:
                 if minNode.getHeuristicValue() < minValue:
-                    maxNode.setHeuristicValue(minNode.getHeuristicValue())
+                    maxNode.setHeuristicValue(minNode.getHeuristicValue())  # changes the parents heuristic value
                     minValue = minNode.getHeuristicValue()
             if maxNode.getHeuristicValue() > maxValue:
-                self.root.setGameBoard(maxNode.getGameBoard())
-                self.root.setHeuristicValue(maxNode.getHeuristicValue())
+                self.root.setGameBoard(maxNode.getGameBoard())  # changes the root gameboard to be the best move so far
+                self.root.setHeuristicValue(maxNode.getHeuristicValue())  # sets the roots heuristic value to be the best it can do
                 maxValue = maxNode.getHeuristicValue()
