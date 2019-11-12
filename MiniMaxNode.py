@@ -1,12 +1,15 @@
 class MiniMaxNode:
-    def __init__(self, board, miniMaxVal):
+    def __init__(self, board):
         #"constructor to initiate this object"
         # store board
         self.board = board
         # minimax value
-        self.value = miniMaxVal
+        self.value = 0
         # child to null
         self.children = None
+        # identifies if either move or put
+        self.type = ""
+
 
     def getHeuristicValue(self):
        # "method to compare the value with the node data"
@@ -58,5 +61,5 @@ class MiniMaxNode:
                             val = tempval
 
                         tempval = 5  # return tempval to 5
-        return val
+        value = val  # changes node value
 

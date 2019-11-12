@@ -121,6 +121,9 @@ class GameBoard:
         self.x_val = 0
         self.y_val = 0
 
+        self.putIndex = []
+        self.removeIndex = []
+
     def didPlayerTokenWin(self, playerToken, adversaryToken):
         gameOver = False
         for x in range(1, 9):
@@ -240,10 +243,10 @@ class GameBoard:
             prevY = self.y_val
 
             possibleIndex = []  # possible indexes of the new locations from given index
-            boards = [] # possible boards
+            boards = []  # possible boards
             boardIndex = 0
             # Add a new board to the list
-            newBoard = copy.deepcopy(self.board)
+            newBoard = copy.deepcopy(self)
             for x in range(-1, 2):
                 for y in range(-1, 2):
                     newX = chr(ord(index[0]) + x)
@@ -257,20 +260,20 @@ class GameBoard:
                             if self.board[self.x_val][self.y_val] == '.':
                                 possibleIndex.append(newXY)
 
-                                newBoard[self.x_val][self.y_val] = player.tokenCharacter
-                                newBoard[prevX][prevY] = '.'
+                                newBoard.board[self.x_val][self.y_val] = player.tokenCharacter
+                                newBoard.board[prevX][prevY] = '.'
 
                                 boards.append(copy.deepcopy(newBoard))
 
-                                newBoard[self.x_val][self.y_val] = '.'
+                                newBoard.board[self.x_val][self.y_val] = '.'
 
                                 print("This is board #" + str(boardIndex))
-                                self.printTempBoard(boards[boardIndex])
+                                self.printTempBoard(boards[boardIndex].board)
                                 boardIndex = boardIndex + 1
 
-            print(possibleIndex)
+        print(possibleIndex)
 
-            return possibleIndex
+        return boards
 
     def printTempBoard(self, boardList):
         alphabetAxis = ['\t', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
@@ -291,20 +294,21 @@ class GameBoard:
     #return new boards for the put option
     def allPutOptions(self, player):
         boards = []
-        tempboard = copy.deepcopy(self.board)
+        tempboard = copy.deepcopy(self)
 
         for (i, row) in enumerate(self.board):
             for (j, value) in enumerate(row):
                 if value == ".":
-
                     value = player.tokenCharacter
-                    tempboard[i][j] = player.tokenCharacter
+                    tempboard.board[i][j] = player.tokenCharacter
+                    tempboard.putIndex = [i, j]
                     boards.append(copy.deepcopy(tempboard))  # create new board of the temporary one
-                    tempboard[i][j] = "."
+                    tempboard.board[i][j] = "."
+
                     # print(i, j, value)
         for x in boards:
-            self.printTempBoard(x)
+            self.printTempBoard(x.board)
 
-        return boards
+        return boards  # returning array of GameBoard objects
 
 >>>>>>> ed3db86d64d0bc9a1625e5dcd416d60f0e911ced
