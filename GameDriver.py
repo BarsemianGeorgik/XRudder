@@ -104,8 +104,8 @@ if __name__ == '__main__':
 
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
-            AI_moves = []
-            AI_nodes = []
+            AI_moves = []   #array of AI intial moves
+            AI_nodes = []   #array of AI move nodes
             player_moves = []  # list of lists of player moves
             player_nodes = []  # list of lists of player nodes
             temp = []
@@ -130,7 +130,7 @@ if __name__ == '__main__':
                 player_moves.append(moves)
                 for move in moves:
                     minimaxnode = MiniMaxNode(move.board)
-                    minimaxnode.calculateHeuristic()  # calculating heuristic for leaf nodes
+                    # print(minimaxnode.heuristic())  # calculating heuristic for leaf nodes
                     temp.append(MiniMaxNode(move.board))  # make playernode
                     #  call heuristic function on the playermoves when created (can make it in the node class itself)
                 player_nodes.append(temp)
@@ -144,6 +144,7 @@ if __name__ == '__main__':
             rootnode.setChildren(AI_nodes)
             miniMaxTree.computeMiniMax()
             gameBoard.board = miniMaxTree.getAIComputedMove()
+            print(miniMaxTree.getRootValue())
 
 
 
