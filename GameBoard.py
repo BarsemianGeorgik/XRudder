@@ -18,6 +18,9 @@ class GameBoard:
         self.x_val = 0
         self.y_val = 0
 
+        self.putIndex = []
+        self.removeIndex = []
+
     def didPlayerTokenWin(self, playerToken, adversaryToken):
         gameOver = False
         for x in range(1, 9):
@@ -192,8 +195,10 @@ class GameBoard:
                 if value == ".":
                     value = player.tokenCharacter
                     tempboard.board[i][j] = player.tokenCharacter
+                    tempboard.putIndex = [i, j]
                     boards.append(copy.deepcopy(tempboard))  # create new board of the temporary one
                     tempboard.board[i][j] = "."
+
                     # print(i, j, value)
         for x in boards:
             self.printTempBoard(x.board)
