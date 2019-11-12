@@ -1,109 +1,17 @@
 import copy
 
 
-<<<<<<< HEAD
-def printTempBoard(boardList):
-    alphabetAxis = ['\t', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
-    print("============= GAME STATUS ============= ")
-    rowNumber = 10
-    for row in boardList:
-        print(str(rowNumber), end='\t ')
-        for elem in row:
-            print(elem, end=' ')
-        rowNumber = rowNumber - 1
-        print()
+def indexToString(index):
+    y = index[0]
+    x = index[1]
 
-    for x in alphabetAxis:
-        print(x, end=' ')
-    print()
-    print()
+    x = x + 97
+    y = 10 - y
+    xy = chr(x) + str(y)
+
+    return xy
 
 
-def allPutOptions(player, board):
-    boards = []
-    tempboard = copy.deepcopy(board)
-
-    for (i, row) in enumerate(board):
-        for (j, value) in enumerate(row):
-            if value == ".":
-                print("I HERE HERE HERE HERE HERE AS MANY TIMES AS I AM MAKING A NEW BOARD FOR MY OPTIONS ")
-                value = player.tokenCharacter
-                tempboard[i][j] = player.tokenCharacter
-                boards.append(copy.deepcopy(tempboard))  # create new board of the temporary one
-                tempboard[i][j] = "."
-                # print(i, j, value)
-    for x in boards:
-        printTempBoard(x)
-
-    return boards
-
-
-def spaghettistringToIndex(userInput):
-    # check if within a to m, and 1 to 10
-    userInput.replace(" ", "")
-    if len(userInput) > 3 or userInput[0].upper() not in "ABCDEFGHIJKL" or int(userInput[1:]) > 10:
-        print("That is an invalid input")
-        return False
-    else:
-        y = (ord(userInput[0].lower()) - 97)  # -97 to get the index.. a-97 = 0, etc.
-        x = 10 - int(userInput[1:])
-
-        coordinate = str(y) + str(x)
-        # print("valid index")
-        # print(self.x_val, self.y_val)
-        return coordinate
-
-
-def possibleMoves(player, board):
-    boards = []  # possible boards
-    #   function that calculates the possible moves of a player
-    #   takes list of player indexes, for every index make a list of boards
-    for index in player.playerTokenLocations:
-        indexof = spaghettistringToIndex(index)
-        prevX = int(indexof[0])
-        prevY = int(indexof[1])
-
-        possibleIndex = []  # possible indexes of the new locations from given index
-
-        boardIndex = 0
-        # Add a new board to the list
-        newBoard = copy.deepcopy(board)
-        for x in range(-1, 2):
-            for y in range(-1, 2):
-                newX = chr(ord(index[0]) + x)
-                newY = str(int(index[1:]) + y)  # done this way to handle index 10
-                if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
-                    newXY = newX + newY
-
-                    # check if this place is occupied
-                    valid = spaghettistringToIndex(newXY)
-                    newX = int(indexof[0])
-                    newY = int(indexof[1])
-                    if valid:
-                        if board[newX][newY] == '.':
-                            possibleIndex.append(newXY)
-
-                            newBoard[newX][newY] = player.tokenCharacter
-                            newBoard[prevX][prevY] = '.'
-
-                            boards.append(copy.deepcopy(newBoard))
-
-                            newBoard[newX][newY] = '.'
-
-                            print("This is board #" + str(boardIndex))
-                            printTempBoard(boards[boardIndex])
-                            boardIndex = boardIndex + 1
-
-        print(possibleIndex)
-        print("THESE ARE MY BOARDS")
-        for each in boards:
-            print(each)
-
-    return boards
-
-
-=======
->>>>>>> ed3db86d64d0bc9a1625e5dcd416d60f0e911ced
 class GameBoard:
 
     def __init__(self):
@@ -120,9 +28,6 @@ class GameBoard:
 
         self.x_val = 0
         self.y_val = 0
-
-        self.putIndex = []
-        self.removeIndex = []
 
     def didPlayerTokenWin(self, playerToken, adversaryToken):
         gameOver = False
@@ -231,9 +136,6 @@ class GameBoard:
             # print(self.x_val, self.y_val)
             return True
 
-<<<<<<< HEAD
-    # return new boards for the put option
-=======
     def possibleMoves(self, player):
         #   function that calculates the possible moves of a player
         #   takes list of player indexes, for every index make a list of boards
@@ -291,7 +193,7 @@ class GameBoard:
         print()
         print()
 
-    #return new boards for the put option
+    # return new boards for the put option
     def allPutOptions(self, player):
         boards = []
         tempboard = copy.deepcopy(self)
@@ -301,7 +203,6 @@ class GameBoard:
                 if value == ".":
                     value = player.tokenCharacter
                     tempboard.board[i][j] = player.tokenCharacter
-                    tempboard.putIndex = [i, j]
                     boards.append(copy.deepcopy(tempboard))  # create new board of the temporary one
                     tempboard.board[i][j] = "."
 
@@ -311,4 +212,12 @@ class GameBoard:
 
         return boards  # returning array of GameBoard objects
 
->>>>>>> ed3db86d64d0bc9a1625e5dcd416d60f0e911ced
+    def getAITokens(self, player):
+        player.playerTokenLocations.clear()
+        for (i, row) in enumerate(self.board):
+            for (j, value) in enumerate(row):
+                if value == player.tokenCharacter:
+                    player.playerTokenLocations.append(indexToString([i, j]))
+                    print("getting AI token locations")
+                    print(player.playerTokenLocations)
+        return player.playerTokenLocations
