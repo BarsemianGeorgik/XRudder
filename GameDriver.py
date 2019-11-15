@@ -34,8 +34,10 @@ if __name__ == '__main__':
 
     print("The Game has Started!")
     gameBoard.printBoard()
-    while (not player1Win) & (not player2Win) & (
-            (movesActionsRemaining != 0) & (p1.tokensRemaining != 0) & (p2.tokensRemaining != 0)):
+
+    moveOrPutRemain = True
+
+    while (not player1Win) and (not player2Win) and moveOrPutRemain:
         turnCounter = turnCounter + 1
 
         # Choosing the Player's turn
@@ -95,17 +97,17 @@ if __name__ == '__main__':
             while not validMoveAction:
                 indexMove = input("Enter the index of your move (Letter followed by number):").upper()
                 validMoveAction = gameBoard.moveToken(indexMove, player)
-                movesActionsRemaining - 1
+                movesActionsRemaining = movesActionsRemaining - 1
                 player.printPlayerTokens()
 
         elif action == 'A':
 
-            gameBoard.getAITokens(p2)
+            beforeAITokenSize = len(gameBoard.getAITokens(p2))
 
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
-            AI_moves = []
-            AI_nodes = []
+            AI_moves = []   #array of AI intial moves
+            AI_nodes = []   #array of AI move nodes
             player_moves = []  # list of lists of player moves
             player_nodes = []  # list of lists of player nodes
             temp = []
@@ -130,7 +132,7 @@ if __name__ == '__main__':
                 player_moves.append(moves)
                 for move in moves:
                     minimaxnode = MiniMaxNode(move.board)
-                    minimaxnode.calculateHeuristic()  # calculating heuristic for leaf nodes
+                    # print(minimaxnode.heuristic())  # calculating heuristic for leaf nodes
                     temp.append(MiniMaxNode(move.board))  # make playernode
                     #  call heuristic function on the playermoves when created (can make it in the node class itself)
                 player_nodes.append(temp)
@@ -143,7 +145,18 @@ if __name__ == '__main__':
                 i = i + 1
             rootnode.setChildren(AI_nodes)
             miniMaxTree.computeMiniMax()
+
             gameBoard.board = miniMaxTree.getAIComputedMove()
+            print(miniMaxTree.getRootValue())
+
+            afterAITokenSize = len(gameBoard.getAITokens(p2))
+
+            # Checking if the AI has chosen to play a token or move a token
+            if beforeAITokenSize < afterAITokenSize:
+                p2.tokensRemaining = p2.tokensRemaining - 1
+
+            elif beforeAITokenSize == afterAITokenSize:
+                movesActionsRemaining = movesActionsRemaining - 1
 
 
 
@@ -157,6 +170,8 @@ if __name__ == '__main__':
         # Check if a player won
         player1Win = gameBoard.didPlayerTokenWin("X", "O")
         player2Win = gameBoard.didPlayerTokenWin("O", "X")
+
+        moveOrPutRemain = (movesActionsRemaining > 0) or (p1.tokensRemaining > 0) or (p2.tokensRemaining > 0)
 
     if player1Win:
         print("Player 1 won the game")

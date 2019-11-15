@@ -10,13 +10,13 @@ if __name__ == '__main__':
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
-                    ['.', '.', '.', '.', 'X', '.', '.', '.', '.', '.', '.', '.', ],
-                    ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
+                    ['.', '.', '.', '.', 'X', '.', '.', 'O', '.', '.', '.', '.', ],
+                    ['.', '.', '.', '.', '.', '.', 'O', '.', '.', '.', '.', '.', ],
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                     ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ], ]
     # Creating root node with current state and default heuristic at 0
-    rootNode = MiniMaxNode(currentGameState, 0)
+    rootNode = MiniMaxNode(currentGameState)
 
 
 
@@ -43,11 +43,11 @@ if __name__ == '__main__':
                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                  ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ], ]
     # # Creating node of the Ai moves and putting inside a list to later pass as Root children
-    AImove1Node = MiniMaxNode(AIMove_1, 0)
+    AImove1Node = MiniMaxNode(AIMove_1)
 
 
 
-    AImove2Node = MiniMaxNode(AIMove_2, 0)
+    AImove2Node = MiniMaxNode(AIMove_2)
 
     PlayerMoveAI1_1 = [['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
                        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ],
@@ -94,12 +94,14 @@ if __name__ == '__main__':
                        ['.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', ], ]
 
     # Creating Player Nodes and assigning Random Heuristic Values
-    PlayerMoveAI_1_1_Node = MiniMaxNode(PlayerMoveAI1_1, 10)
-    PlayerMoveAI_1_2_Node = MiniMaxNode(PlayerMoveAI1_2, -5)
-    PlayerMoveAI_2_1_Node = MiniMaxNode(PlayerMoveAI2_1, -3)
-
-    PlayerMoveAI_2_2_Node = MiniMaxNode(PlayerMoveAI2_2, 3)
-
+    PlayerMoveAI_1_1_Node = MiniMaxNode(PlayerMoveAI1_1)
+    PlayerMoveAI_1_1_Node.setHeuristicValue(10)
+    PlayerMoveAI_1_2_Node = MiniMaxNode(PlayerMoveAI1_2)
+    PlayerMoveAI_1_2_Node.setHeuristicValue(-5)
+    PlayerMoveAI_2_1_Node = MiniMaxNode(PlayerMoveAI2_1)
+    PlayerMoveAI_2_1_Node.setHeuristicValue(-3)
+    PlayerMoveAI_2_2_Node = MiniMaxNode(PlayerMoveAI2_2)
+    PlayerMoveAI_2_2_Node.setHeuristicValue(-6)
     # Adding player moves as AI_1 children Node
     PlayerMoveListForAI_1 = [PlayerMoveAI_1_1_Node, PlayerMoveAI_1_2_Node]
     AImove1Node.setChildren(PlayerMoveListForAI_1)
