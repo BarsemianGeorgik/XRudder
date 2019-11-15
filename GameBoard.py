@@ -169,11 +169,11 @@ class GameBoard:
 
                                 newBoard.board[self.x_val][self.y_val] = '.'
 
-                                print("This is board #" + str(boardIndex))
-                                self.printTempBoard(boards[boardIndex].board)
+                               # print("This is board #" + str(boardIndex))
+                                #self.printTempBoard(boards[boardIndex].board)
                                 boardIndex = boardIndex + 1
 
-        print(possibleIndex)
+        #print(possibleIndex)
 
         return boards
 
@@ -207,8 +207,8 @@ class GameBoard:
                     tempboard.board[i][j] = "."
 
                     # print(i, j, value)
-        for x in boards:
-            self.printTempBoard(x.board)
+        #for x in boards:
+        #   self.printTempBoard(x.board)
 
         return boards  # returning array of GameBoard objects
 
