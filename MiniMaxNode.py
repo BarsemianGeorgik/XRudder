@@ -51,7 +51,7 @@ class MiniMaxNode:
                 value = value + 1
             return value
 
-    def newheuristic(self):
+    def newheuristic(self, token, opptoken):
         # how close it is to finishing an x anywhere.. even with spaces in the middle
         opponent = 0  # opponents total value
         art = 0  # ai's total value
@@ -59,12 +59,12 @@ class MiniMaxNode:
         temp = 0
         for x in range(1, 9):
             for y in range(1, 11):
-                if 'O' == self.board[x][y] or '.' == self.board[x][y]:
-                    temp = self.closetox('O', 'X', x, y)
+                if token == self.board[x][y] or '.' == self.board[x][y]:
+                    temp = self.closetox(token, opptoken, x, y)
                     if temp > art:
                         art = temp
-                if 'X' == self.board[x][y] or '.' == self.board[x][y]:
-                    temp = self.closetox('X', 'O', x, y)
+                if opptoken == self.board[x][y] or '.' == self.board[x][y]:
+                    temp = self.closetox(opptoken, token, x, y)
                     if temp > opponent:
                         opponent = temp
 

@@ -25,7 +25,7 @@ class MiniMaxTree:
             minChildList = maxNode.getChildren()  # Player's possible moves
             minValue = sys.maxsize  # +infinity
             for minNode in minChildList:
-                minNode.newheuristic()  # setting leafs values
+
                 if minNode.getHeuristicValue() < minValue:
                     maxNode.setHeuristicValue(minNode.getHeuristicValue())  # changes the parents heuristic value
                     minValue = minNode.getHeuristicValue()

@@ -2,6 +2,7 @@ from GameBoard import GameBoard
 from Player import Player
 from MiniMaxNode import MiniMaxNode
 from MiniMaxTree import MiniMaxTree
+import copy
 
 if __name__ == '__main__':
 
@@ -134,13 +135,16 @@ if __name__ == '__main__':
 
                 if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0:
                     moves.extend(each.possibleMoves(p1))
-                # ELSEIF player can't do anything return orginal game board? cause they can't move..
+                # ELSEIF player can't do anything return original game board? cause they can't move..
                 player_moves.append(moves)
                 for move in moves:
                     minimaxnode = MiniMaxNode(move.board)  # create player nodes
 
-                    temp.append(MiniMaxNode(move.board))  # make playernode
-                #  call heuristic function on the playermoves when created (can make it in the node class itself)
+                    # find out which token the AI has
+                    # 
+                    minimaxnode.newheuristic('O', 'X')  # call heuristic function on leaf nodes
+                    temp.append(copy.deepcopy(minimaxnode))  # add to array of player nodes for specific AI move
+
                 player_nodes.append(temp)
                 moves = []  # clear player move array
                 temp = []
