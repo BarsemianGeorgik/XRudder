@@ -4,7 +4,7 @@ class MiniMaxNode:
         # store board
         self.board = board
         # minimax value
-        self.value = -5
+        self.value = 0
         # child to null
         self.children = None
         # identifies if either move or put
@@ -30,90 +30,47 @@ class MiniMaxNode:
     def setGameBoard(self, board):
         self.board = board
 
-    def heuristic(self):
-        # for the heuristic to work we need to really need to maximize the difference of the opponent
-        # we don't actually
-        #print("hi")
-        val = 0
-        # how close self is to creating an x
+    def closetox(self, token, opptoken, x, y):
+        value = 0
+        #  checks if opponents token is blocking the creation of an x at this point
+        if opptoken == self.board[x - 1][y - 1] or opptoken == self.board[x + 1][y + 1] \
+                or opptoken == self.board[x - 1][y + 1] or opptoken == self.board[x + 1][y - 1]:
+            return 0
+        if (opptoken == self.board[x][y - 1]) and (opptoken == self.board[x][y + 1]):  # check if x creation has been blocked
+            return 0
+        else:
+            if token == self.board[x][y]:  # center
+                value = value + 1
+            if token == self.board[x - 1][y - 1]:  # top left
+                value = value + 1
+            if token == self.board[x + 1][y + 1]:  # bottom right
+                value = value + 1
+            if token == self.board[x - 1][y + 1]:  # top right
+                value = value + 1
+            if token == self.board[x + 1][y - 1]:  # bottom left
+                value = value + 1
+            return value
+
+    def newheuristic(self):
+        # how close it is to finishing an x anywhere.. even with spaces in the middle
+        opponent = 0  # opponents total value
+        art = 0  # ai's total value
+        total = 0  # art - opponent
+        temp = 0
         for x in range(1, 9):
             for y in range(1, 11):
-                if 'O' == self.board[x][y]:
-                    if ('X' == self.board[x][y-1]) and ('X' == self.board[x][y+1]):
-                       # print("x formation was blocked at ", x, ",", y)
-                        val = val - 1
-                    if 'X' == self.board[x - 1][y - 1] or 'X' == self.board[x + 1][y + 1] \
-                            or 'X' == self.board[x - 1][y + 1] or 'X' == self.board[x + 1][y - 1]:
-                        val = val - 1
-                    else:
-                      #  print("Found middle of an x")
-                        val = val + 1
-                        if 'O' == self.board[x - 1][y - 1]:  # top left
-                            val = val + 1
-                        if 'O' == self.board[x + 1][y + 1]:  # bottom right
-                            val = val + 1
-                        if 'O' == self.board[x - 1][y + 1]:  # top right
-                            val = val + 1
-                        if 'O' == self.board[x + 1][y - 1]:  # bottom left
-                            val = val + 1
-        for x in range(1, 9):
-            for y in range(1, 11):
-                if 'X' == self.board[x][y]:
-                    if ('O' == self.board[x][y-1]) and ('O' == self.board[x][y+1]):
-                        val = val + 1
-                    if 'O' == self.board[x - 1][y - 1] or 'O' == self.board[x + 1][y + 1] \
-                            or 'O' == self.board[x - 1][y + 1] or 'O' == self.board[x + 1][y - 1]:
-                        val = val + 1
-                    else:
-                       # print("Found middle of an x")
-                        val = val - 1
-                        if 'X' == self.board[x - 1][y - 1]:  # top left
-                            val = val - 1
-                        if 'X' == self.board[x + 1][y + 1]:  # bottom right
-                            val = val - 1
-                        if 'X' == self.board[x - 1][y + 1]:  # top right
-                            val = val - 1
-                        if 'X' == self.board[x + 1][y - 1]:  # bottom left
-                            val = val - 1
-        self.value = val - 2
-        return val - 2
-        # how close opponent is to creating an x
+                if 'O' == self.board[x][y] or '.' == self.board[x][y]:
+                    temp = self.closetox('O', 'X', x, y)
+                    if temp > art:
+                        art = temp
+                if 'X' == self.board[x][y] or '.' == self.board[x][y]:
+                    temp = self.closetox('X', 'O', x, y)
+                    if temp > opponent:
+                        opponent = temp
+
+        total = art - opponent
+        self.value = total
+        return total
 
 
-
-#  Naive heuristic
-#  heuristic value starts at 5, take away 1 the closer it gets to creating an x
-#  looks at all the tokens as the center of the x, checks the opponents tokens aren't in the way
-#  or that it's been blocked
-#  can change the X/Os to be passed tokens
-    def calculateHeuristic(self):
-        val = 0;
-        tempval = 0;
-        for x in range(1, 9):
-            for y in range(1, 11):
-                if 'O' == self.board[x][y]:
-                    if ('X' == self.board[x][y-1]) and ('X' == self.board[x][y+1]):
-                        print("x formation was blocked at ", x, ",", y)
-                        val = val + 1
-                    if 'X' == self.board[x - 1][y - 1] or 'X' == self.board[x + 1][y + 1] \
-                            or 'O' == self.board[x - 1][y + 1] or 'O' == self.board[x + 1][y - 1]:
-                        print("x formation has been blocked here")
-                        val = val + 1
-                    else:
-                        print("Found middle of an x")
-                        tempval = tempval - 1
-                        if 'O' == self.board[x - 1][y - 1]:  # top left
-                            tempval = tempval - 1
-                        if 'O' == self.board[x + 1][y + 1]:  # bottom right
-                            tempval = tempval - 1
-                        if 'O' == self.board[x - 1][y + 1]:  # top right
-                            tempval = tempval - 1
-                        if 'O' == self.board[x + 1][y - 1]:  # bottom left
-                            tempval = tempval - 1
-                        #if tempval > val:  # see if somewhere else it's closer to making an x
-                        #val = tempval
-
-                        #tempval = 0  # return tempval to 5
-        value = tempval  # changes node value
-        return tempval
 

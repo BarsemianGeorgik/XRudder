@@ -115,26 +115,32 @@ if __name__ == '__main__':
             rootnode = MiniMaxNode(gameBoard.board)  # create node of the current gameboard
             miniMaxTree.setRoot(rootnode)  # set as the root node
 
+            # ******
+            # Only calculate puts if AI still has tokens left ****
+            # ******
             AI_moves.extend(gameBoard.allPutOptions(p2))  # calculate all put options for AI
+
+            # if ai has moves left, calculate possible moves
             if movesActionsRemaining > 0 and len(p2.playerTokenLocations) != 0:
                 AI_moves.extend(gameBoard.possibleMoves(p2))  # calculate all move options for AI
 
             for each in AI_moves:  # make each AI move a node
-                AI_nodes.append(MiniMaxNode(each.board))  # setting heuristic to 0 for all of them,
+                AI_nodes.append(MiniMaxNode(each.board))  # setting heuristic to 0 for all of them
 
             for each in AI_moves:  # calculate player moves for each AI move
                 moves = []
                 if p1.tokensRemaining > 0:
-                   moves = each.allPutOptions(p1)
+                  moves = each.allPutOptions(p1)
 
                 if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0:
                     moves.extend(each.possibleMoves(p1))
+                # ELSEIF player can't do anything return orginal game board? cause they can't move..
                 player_moves.append(moves)
                 for move in moves:
-                    minimaxnode = MiniMaxNode(move.board)
-                    # print(minimaxnode.heuristic())  # calculating heuristic for leaf nodes
+                    minimaxnode = MiniMaxNode(move.board)  # create player nodes
+
                     temp.append(MiniMaxNode(move.board))  # make playernode
-                    #  call heuristic function on the playermoves when created (can make it in the node class itself)
+                #  call heuristic function on the playermoves when created (can make it in the node class itself)
                 player_nodes.append(temp)
                 moves = []  # clear player move array
                 temp = []
@@ -147,7 +153,6 @@ if __name__ == '__main__':
             miniMaxTree.computeMiniMax()
 
             gameBoard.board = miniMaxTree.getAIComputedMove()
-            print(miniMaxTree.getRootValue())
 
             afterAITokenSize = len(gameBoard.getAITokens(p2))
 

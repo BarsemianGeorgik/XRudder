@@ -25,13 +25,13 @@ class MiniMaxTree:
             minChildList = maxNode.getChildren()  # Player's possible moves
             minValue = sys.maxsize  # +infinity
             for minNode in minChildList:
-                print("leaf node value: ", minNode.heuristic())  # setting leafs values
+                minNode.newheuristic()  # setting leafs values
                 if minNode.getHeuristicValue() < minValue:
                     maxNode.setHeuristicValue(minNode.getHeuristicValue())  # changes the parents heuristic value
                     minValue = minNode.getHeuristicValue()
-                    #print("setting the min value to :", maxValue)
+
             if maxNode.getHeuristicValue() > maxValue:
                 self.root.setGameBoard(maxNode.getGameBoard())  # changes the root gameboard to be the best move so far
                 self.root.setHeuristicValue(maxNode.getHeuristicValue())  # sets the roots heuristic value to be the best it can do
                 maxValue = maxNode.getHeuristicValue()
-                #print("setting the max value to :", maxValue)
+
