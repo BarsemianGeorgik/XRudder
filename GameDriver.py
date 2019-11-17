@@ -14,7 +14,20 @@ if __name__ == '__main__':
     p1 = Player("Player 1", "X")
     p2 = Player("Player 2", "O")
 
-    isFirstPlayerTurn = True
+    while True:
+        playerFirst = input(
+            "Would you like to play first? [Y]es or [N]o?").upper()
+        if playerFirst not in "YN" or len(playerFirst) != 1:
+            print("The entry was not correct please try again")
+            continue
+        break;
+
+    if playerFirst == 'Y':
+        isFirstPlayerTurn = True
+
+    else:
+        isFirstPlayerTurn = False
+
     player = " "
     gameBoard = GameBoard()
 
@@ -119,7 +132,11 @@ if __name__ == '__main__':
             # ******
             # Only calculate puts if AI still has tokens left ****
             # ******
-            AI_moves.extend(gameBoard.restrictPutOptions(p2, p1))  # calculate all put options for AI
+            if p2.tokensRemaining == 15:
+                AI_moves.extend(gameBoard.allPutOptions(p2))
+
+            if p2.tokensRemaining != 15:
+                AI_moves.extend(gameBoard.restrictPutOptions(p2, p1))  # calculate all put options for AI
 
             # if ai has moves left, calculate possible moves
             if movesActionsRemaining > 0 and len(p2.playerTokenLocations) != 0:
@@ -130,8 +147,12 @@ if __name__ == '__main__':
 
             for each in AI_moves:  # calculate player moves for each AI move
                 moves = []
-                if p1.tokensRemaining > 0:
-                  moves = each.restrictPutOptions(p1, p2)
+                if p1.tokensRemaining == 15:
+                  moves = each.allPutOptions(p1)
+
+                if p1.tokensRemaining != 15:
+                    moves = each.restrictPutOptions(p1, p2)
+
 
                 if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0:
                     moves.extend(each.possibleMoves(p1))

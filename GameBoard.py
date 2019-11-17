@@ -126,7 +126,7 @@ class GameBoard:
     def stringToIndex(self, userInput):
         # check if within a to m, and 1 to 10
         userInput.replace(" ", "")
-        if len(userInput) > 3 or userInput[0].upper() not in "ABCDEFGHIJKL" or int(userInput[1:]) > 10:
+        if len(userInput) > 3 or len(userInput) < 2 or userInput[0].upper() not in "ABCDEFGHIJKL" or int(userInput[1:]) > 10:
             print("That is an invalid input")
             return False
         else:
@@ -207,7 +207,8 @@ class GameBoard:
                         boards.append(copy.deepcopy(tempboard))  # create new board of the temporary one
                         tempboard.board[i][j] = "."
 
-                        # print(i, j, value)
+                        #print(i, j, value)
+                        #self.printTempBoard(tempboard.board)
         # for x in boards:
         #   self.printTempBoard(x.board)
 
@@ -227,8 +228,8 @@ class GameBoard:
                 boardIndex = 0
                 # Add a new board to the list
                 newBoard = copy.deepcopy(self)
-                for x in range(-2, 3):
-                    for y in range(-2, 3):
+                for x in range(-5, 5):
+                    for y in range(-5, 5):
                         newX = chr(ord(index[0]) + x)
                         newY = str(int(index[1:]) + y)  # done this way to handle index 10
                         if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
@@ -262,8 +263,8 @@ class GameBoard:
                 boardIndex = 0
                 # Add a new board to the list
                 newBoard = copy.deepcopy(self)
-                for x in range(-2, 3):
-                    for y in range(-2, 3):
+                for x in range(-5, 5):
+                    for y in range(-5, 5):
                         newX = chr(ord(index[0]) + x)
                         newY = str(int(index[1:]) + y)  # done this way to handle index 10
                         if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
@@ -281,11 +282,13 @@ class GameBoard:
 
                                     newBoard.board[self.x_val][self.y_val] = '.'
 
-                                # print("This is board #" + str(boardIndex))
-                                # self.printTempBoard(boards[boardIndex].board)
-                                    boardIndex = boardIndex + 1
+                                    #print("This is board #" + str(boardIndex))
+                                    #self.printTempBoard(boards[boardIndex].board)
+                                    #boardIndex = boardIndex + 1
 
         # print(possibleIndex)
+
+
 
         return boards
 
@@ -295,6 +298,6 @@ class GameBoard:
             for (j, value) in enumerate(row):
                 if value == player.tokenCharacter:
                     player.playerTokenLocations.append(indexToString([i, j]))
-                    print("getting AI token locations")
-                    print(player.playerTokenLocations)
+
+
         return player.playerTokenLocations
