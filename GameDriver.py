@@ -3,6 +3,8 @@ from Player import Player
 from MiniMaxNode import MiniMaxNode
 from MiniMaxTree import MiniMaxTree
 import copy
+import datetime
+
 
 if __name__ == '__main__':
 
@@ -18,7 +20,7 @@ if __name__ == '__main__':
         playerFirst = input(
             "Would you like to play first? [Y]es or [N]o?").upper()
         if playerFirst not in "YN" or len(playerFirst) != 1:
-            print("The entry was not correct please try again")
+            print("The entry was not correct please try again \n")
             continue
         break;
 
@@ -116,12 +118,14 @@ if __name__ == '__main__':
 
         elif action == 'A':
 
+            startAI = datetime.datetime.now()
+
             beforeAITokenSize = len(gameBoard.getAITokens(p2))
 
             print("AI is calculating it's move")
             miniMaxTree = MiniMaxTree()
-            AI_moves = []   #array of AI intial moves
-            AI_nodes = []   #array of AI move nodes
+            AI_moves = []  # array of AI intial moves
+            AI_nodes = []  # array of AI move nodes
             player_moves = []  # list of lists of player moves
             player_nodes = []  # list of lists of player nodes
             temp = []
@@ -129,13 +133,11 @@ if __name__ == '__main__':
             rootnode = MiniMaxNode(gameBoard.board)  # create node of the current gameboard
             miniMaxTree.setRoot(rootnode)  # set as the root node
 
-            # ******
-            # Only calculate puts if AI still has tokens left ****
-            # ******
+            # Check all the possible moves since there are no tokens on the board yet
             if p2.tokensRemaining == 15:
                 AI_moves.extend(gameBoard.allPutOptions(p2))
 
-            if p2.tokensRemaining != 15:
+            elif p2.tokensRemaining > 0:
                 AI_moves.extend(gameBoard.restrictPutOptions(p2, p1))  # calculate all put options for AI
 
             # if ai has moves left, calculate possible moves
@@ -148,11 +150,10 @@ if __name__ == '__main__':
             for each in AI_moves:  # calculate player moves for each AI move
                 moves = []
                 if p1.tokensRemaining == 15:
-                  moves = each.allPutOptions(p1)
+                    moves = each.allPutOptions(p1)
 
-                if p1.tokensRemaining != 15:
+                if p1.tokensRemaining != 15 and p1.tokensRemaining > 0:
                     moves = each.restrictPutOptions(p1, p2)
-
 
                 if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0:
                     moves.extend(each.possibleMoves(p1))
@@ -161,7 +162,7 @@ if __name__ == '__main__':
                 for move in moves:
                     minimaxnode = MiniMaxNode(move.board)  # create player nodes
 
-                    # find out which token the AI has
+                    # find out which token the AI has, always the same token.
                     # 
                     minimaxnode.newheuristic('O', 'X')  # call heuristic function on leaf nodes
                     temp.append(copy.deepcopy(minimaxnode))  # add to array of player nodes for specific AI move
@@ -181,6 +182,9 @@ if __name__ == '__main__':
 
             afterAITokenSize = len(gameBoard.getAITokens(p2))
 
+            endAI = datetime.datetime.now()
+            print("Total Time To Perform Action: " + str((endAI - startAI).total_seconds()) + " secs.")
+
             # Checking if the AI has chosen to play a token or move a token
             if beforeAITokenSize < afterAITokenSize:
                 p2.tokensRemaining = p2.tokensRemaining - 1
@@ -188,14 +192,13 @@ if __name__ == '__main__':
             elif beforeAITokenSize == afterAITokenSize:
                 movesActionsRemaining = movesActionsRemaining - 1
 
-
-
         # Print the Board
         gameBoard.printBoard()
         player.printPlayerStatus()
         player.printPlayerTokens()
 
         print("Moves remaining: " + str(movesActionsRemaining))
+
 
         # Check if a player won
         player1Win = gameBoard.didPlayerTokenWin("X", "O")
