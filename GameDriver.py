@@ -135,16 +135,16 @@ if __name__ == '__main__':
 
             # Check all the possible moves since there are no tokens on the board yet
             if p2.tokensRemaining == 15:
-                print("generating all put options for p2")
+               # print("generating all put options for p2")
                 AI_moves.extend(gameBoard.allPutOptions(p2))
 
             elif p2.tokensRemaining > 0:
-                print("generating restricted put options for p2")
+                # print("generating restricted put options for p2")
                 AI_moves.extend(gameBoard.restrictPutOptions(p2, p1))  # calculate all put options for AI
 
             # if ai has moves left, calculate possible moves
             if (movesActionsRemaining > 0) and (len(p2.playerTokenLocations) != 0) :
-                print("generating move options for p2")
+                # print("generating move options for p2")
                 AI_moves.extend(gameBoard.possibleMoves(p2))  # calculate all move options for AI
 
             for each in AI_moves:  # make each AI move a node
@@ -157,16 +157,16 @@ if __name__ == '__main__':
             for each in AI_moves:  # calculate player moves for each AI move
                 moves = []
                 if p1.tokensRemaining == 15:
-                    print("generating all put options for p1")
+                    # print("generating all put options for p1")
                     moves = each.allPutOptions(p1)
 
                 if p1.tokensRemaining != 15:
                     if p1.tokensRemaining > 0:
-                        print("generating restricted puts for p1")
+                      #  print("generating restricted puts for p1")
                         moves = each.restrictPutOptions(p1, p2)
 
                 if movesActionsRemaining > 0 and len(p1.playerTokenLocations) != 0 and (p1.tokensRemaining < 0):
-                    print("generating move options for p1")
+                    # print("generating move options for p1")
                     moves.extend(each.possibleMoves(p1))
                 # ELSEIF player can't do anything return original game board? cause they can't move..
                 player_moves.append(moves)
