@@ -74,11 +74,8 @@ class MiniMaxNode:
         return total
 
     def finalheuristic(self, token, opptoken,opponent, art):
-        final = 0
-        previouslow = 300
         previoushigh = -300
         total = 0
-        temp = 0
         for x in range(1, 9):
             for y in range(1, 11):
                 value = 0
@@ -101,6 +98,7 @@ class MiniMaxNode:
                         value += 6
                     if temp <= -4:
                         value += 3
+                total += value
                 # checks if opponent is building an x with a center already
                 if opptoken == self.board[x][y]:
                     if opptoken == self.board[x][y]:  # center
@@ -113,7 +111,7 @@ class MiniMaxNode:
                         temp -= 1
                     if opptoken == self.board[x + 1][y - 1]:  # bottom left
                         temp -= 1
-                    value = value + temp
+                    # value = value + temp
                     if temp <= -3 and (token == self.board[x - 1][y - 1]
                                        or token == self.board[x + 1][y + 1] \
                                        or token == self.board[x - 1][y + 1] or token == self.board[x + 1][y - 1]):
@@ -126,8 +124,9 @@ class MiniMaxNode:
                 value = 0
                 #  allows us to build our x, checking to make sure no opptoken is blocking our way
                 # create a function instead that is called when the puts have run out
-                if art.tokensRemaining <= 1:
-                    if (token == self.board[x][y] or token == '.') and not (
+                # I need to add the last ai's token to the diamond somehow (SPECIAL CASE SCENARIO)
+                #if art.tokensRemaining <= 1 and opponent.tokensRemaining <= 0:
+                if (token == self.board[x][y] or token == '.') and not (
                         opptoken == self.board[x - 1][y - 1] or opptoken == self.board[x + 1][y + 1] \
                         or opptoken == self.board[x - 1][y + 1] or opptoken == self.board[x + 1][y - 1]):
                         if token == self.board[x][y]:  # center
@@ -145,21 +144,21 @@ class MiniMaxNode:
                             if value == 5:
                                 total += 100
                 #  we gonna make a diamond
-                elif (token == self.board[x][y]) and not (opptoken == self.board[x - 1][y - 1] or opptoken == self.board[x][y - 1] or opptoken == self.board[x][y + 1] or opptoken == self.board[x + 1][y] or opptoken == self.board[x - 1][y] or opptoken == self.board[x + 1][y + 1] or opptoken == self.board[x - 1][y + 1] or opptoken == self.board[x + 1][y - 1]  ):
-                    if token == self.board[x][y]:
-                        value = value + 1
-                    if token == self.board[x][y+1]:
-                        value = value + 1
-                    if token == self.board[x][y-1]:
-                        value = value + 1
-                    if token == self.board[x-1][y]:
-                        value = value + 1
-                    if token == self.board[x+1][y]:
-                        value = value + 1
-                    if value > previoushigh:
-                        previoushigh = value
-                        if value == 5:
-                            total += 100 # may want to take this line out ..
+                # elif (token == self.board[x][y]) and not (opptoken == self.board[x - 1][y - 1] or opptoken == self.board[x][y - 1] or opptoken == self.board[x][y + 1] or opptoken == self.board[x + 1][y] or opptoken == self.board[x - 1][y] or opptoken == self.board[x + 1][y + 1] or opptoken == self.board[x - 1][y + 1] or opptoken == self.board[x + 1][y - 1]):
+                #     if token == self.board[x][y]:
+                #         value = value + 2
+                #     if token == self.board[x][y+1]:
+                #         value = value + 2
+                #     if token == self.board[x][y-1]:
+                #         value = value + 2
+                #     if token == self.board[x-1][y]:
+                #         value = value + 2
+                #     if token == self.board[x+1][y]:
+                #         value = value + 2
+                #     if value > previoushigh:
+                #         previoushigh = value
+                #         if value == 5:
+                #             total += 100  # may want to take this line out ..
         total = total + previoushigh
         self.value = total
         return total
