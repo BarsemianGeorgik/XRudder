@@ -141,13 +141,13 @@ class GameBoard:
     def possibleMoves(self, player):
         #   function that calculates the possible moves of a player
         #   takes list of player indexes, for every index make a list of boards
+        boards = []  # possible boards
+        possibleIndex = []  # possible indexes of the new locations from given index
         for index in player.playerTokenLocations:
             indexof = self.stringToIndex(index)
             prevX = self.x_val
             prevY = self.y_val
 
-            possibleIndex = []  # possible indexes of the new locations from given index
-            boards = []  # possible boards
             boardIndex = 0
             # Add a new board to the list
             newBoard = copy.deepcopy(self)
@@ -225,7 +225,7 @@ class GameBoard:
         boardIndex = 0
 
         if player.tokensRemaining > 0:
-            for index in player.playerTokenLocations:
+            for index in oppponent.playerTokenLocations:
                 indexof = self.stringToIndex(index)
                 prevX = self.x_val
                 prevY = self.y_val
@@ -259,7 +259,7 @@ class GameBoard:
 
             # print(possibleIndex)
 
-            for index in oppponent.playerTokenLocations:
+            for index in player.playerTokenLocations:
                 indexof = self.stringToIndex(index)
                 prevX = self.x_val
                 prevY = self.y_val
@@ -297,14 +297,25 @@ class GameBoard:
 
     def getAITokens(self, player):
 
+        oldLocations = player.playerTokenLocations
+        newLocations = []
+
         for (i, row) in enumerate(self.board):
             for (j, value) in enumerate(row):
                 if value == player.tokenCharacter:
                     # player.lastPlayedIndex = ""
                     # player.lastPlayedIndex = indexToString([i, j])
+                    newLocations.append(indexToString([i, j]).upper())
 
-                    if indexToString([i, j]).upper() not in player.playerTokenLocations:
+                    if indexToString([i,
+                                      j]).upper() not in player.playerTokenLocations:  # if a new token is not in his list, add it to this list.
                         player.playerTokenLocations.append(indexToString([i, j]).upper())
                         player.lastPlayedIndex = indexToString([i, j]).upper()
 
+        for i in player.playerTokenLocations:
+            if i not in newLocations:
+                print("This is not in the list ")
+                print(i)
+                player.previousMove = i
+                player.playerTokenLocations.remove(i)
         return player.playerTokenLocations

@@ -4,6 +4,7 @@ class Player:
         self.tokenCharacter = tokenCharacter
         self.tokensRemaining = 15
         self.playerTokenLocations = []
+        self.previousMove = ''
         self.lastPlayedIndex = ''
 
     def printPlayerStatus(self):
@@ -11,4 +12,7 @@ class Player:
 
     def printPlayerTokens(self):
         print(self.playerTokenLocations)
-        print("Last Played: " + str(self.lastPlayedIndex).upper())
+        if self.previousMove != '':
+            print("Last Played: " + str(self.previousMove).upper() + "->" + str(self.lastPlayedIndex).upper())
+        else:
+            print("Last Played: " + str(self.lastPlayedIndex).upper())
