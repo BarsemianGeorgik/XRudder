@@ -224,6 +224,8 @@ class GameBoard:
         boards = []  # possible boards
         boardIndex = 0
 
+        indexOfPossibleMoves = []
+
         if player.tokensRemaining > 0:
             for index in oppponent.playerTokenLocations:
                 indexof = self.stringToIndex(index)
@@ -239,25 +241,29 @@ class GameBoard:
                         newX = chr(ord(index[0]) + x)
                         newY = str(int(index[1:]) + y)  # done this way to handle index 10
                         if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
+
                             newXY = newX + newY
 
-                            # check if this place is occupied
-                            valid = self.stringToIndex(newXY)
-                            if valid:
-                                if self.board[self.x_val][self.y_val] == '.':
-                                    possibleIndex.append(newXY)
+                            if newXY not in indexOfPossibleMoves:
+                                indexOfPossibleMoves.append(newXY)
 
-                                    newBoard.board[self.x_val][self.y_val] = player.tokenCharacter
+                                # check if this place is occupied
+                                valid = self.stringToIndex(newXY)
+                                if valid:
+                                    if self.board[self.x_val][self.y_val] == '.':
+                                        possibleIndex.append(newXY)
 
-                                    boards.append(copy.deepcopy(newBoard))
+                                        newBoard.board[self.x_val][self.y_val] = player.tokenCharacter
 
-                                    newBoard.board[self.x_val][self.y_val] = '.'
+                                        boards.append(copy.deepcopy(newBoard))
 
-                                    # print("This is board #" + str(boardIndex))
-                                    # self.printTempBoard(boards[boardIndex].board)
-                                    boardIndex = boardIndex + 1
+                                        newBoard.board[self.x_val][self.y_val] = '.'
 
-            # print(possibleIndex)
+                                        # print("This is board #" + str(boardIndex))
+                                        # self.printTempBoard(boards[boardIndex].board)
+                                        boardIndex = boardIndex + 1
+
+                # print(possibleIndex)
 
             for index in player.playerTokenLocations:
                 indexof = self.stringToIndex(index)
@@ -275,21 +281,24 @@ class GameBoard:
                         if newX in "ABCDEFGHIJKL" and 0 < int(newY) <= 10:
                             newXY = newX + newY
 
-                            # check if this place is occupied
-                            valid = self.stringToIndex(newXY)
-                            if valid:
-                                if self.board[self.x_val][self.y_val] == '.':
-                                    possibleIndex.append(newXY)
+                            if newXY not in indexOfPossibleMoves:
+                                indexOfPossibleMoves.append(newXY)
 
-                                    newBoard.board[self.x_val][self.y_val] = player.tokenCharacter
+                                # check if this place is occupied
+                                valid = self.stringToIndex(newXY)
+                                if valid:
+                                    if self.board[self.x_val][self.y_val] == '.':
+                                        possibleIndex.append(newXY)
 
-                                    boards.append(copy.deepcopy(newBoard))
+                                        newBoard.board[self.x_val][self.y_val] = player.tokenCharacter
 
-                                    newBoard.board[self.x_val][self.y_val] = '.'
+                                        boards.append(copy.deepcopy(newBoard))
 
-                                    # print("This is board #" + str(boardIndex))
-                                    # self.printTempBoard(boards[boardIndex].board)
-                                    # boardIndex = boardIndex + 1
+                                        newBoard.board[self.x_val][self.y_val] = '.'
+
+                                        # print("This is board #" + str(boardIndex))
+                                        # self.printTempBoard(boards[boardIndex].board)
+                                        # boardIndex = boardIndex + 1
 
         # print(possibleIndex)
 

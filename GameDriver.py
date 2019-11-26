@@ -175,7 +175,7 @@ if __name__ == '__main__':
 
                     # find out which token the AI has, always the same token.
                     # 
-                    minimaxnode.finalheuristic('O', 'X', p1, p2)  # call heuristic function on leaf nodes
+                    minimaxnode.finalheuristic2('O', 'X')  # call heuristic function on leaf nodes
                     temp.append(copy.deepcopy(minimaxnode))  # add to array of player nodes for specific AI move
 
                 player_nodes.append(temp)
